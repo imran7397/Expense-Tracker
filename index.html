@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EXPENSE TRACKER</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+     /* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+} 
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-bottom: 50px; /* Add padding for bottom navigation bar */
+    background-image: url('https://m.media-amazon.com/images/I/61JfO8-6-FL._AC_UF1000,1000_QL80_.jpg');
+    background-size: contain; /* Adjust the background size to be smaller */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* Fix the background in place */
+}
+.container {
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    min-height: calc(100vh - 70px); /* Ensure container takes the full available height minus some padding */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative; /* Added for positioning the hamburger menu */
+    margin-bottom: -35px;
+}
+
+h2 {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: black; /* Change text color to black */
+}
+
+.btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 8px 12px; /* Reduced padding */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0; /* Adjusted margin */
+}
+
+.btn:hover {
+    background-color: #ff3d00;
+}
+
+.form-footer {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.form-footer a {
+    color: #ff5722;
+    text-decoration: none;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+}
+
+.input-field-wrapper {
+    position: relative;
+}
+
+.toggle-button {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ff5722;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+.home-widget {
+    padding: 40px 0;
+    text-align: center;
+}
+
+.home-widget span {
+    display: block;
+    font-weight: bold;
+}
+
+#expense-page {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.tab-bar {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    border-bottom: 2px solid #ccc;
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.active-tab {
+    color: #ff5722;
+    border-bottom: 2px solid #ff5722;
+}
+
+/* Hamburger Menu */
+.hamburger-menu {
+    position: absolute; /* Changed to absolute for positioning within the container */
+    top: 10px;
+    left: 10px; /* Position it at the top left of the container */
+    background-color: white; /* Ensure background color is solid for visibility */
+    color: black; /* Ensure the color is visible */
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1001; /* Ensure it is above other elements */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a slight shadow for better visibility */
+}
+ 
+        /* Drawer */
+        .drawer {
+            position: fixed;
+            top: 15px;
+            left: -250px; /* Start off-screen to the left */
+            width: 250px;
+            height: 100%;
+            background-color: transparent; /* Ensure background color is solid for visibility */
+            color: black;
+            padding: 30px;
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        /* Drawer open state */
+        .drawer.open {
+            left: 0; /* Move into view when open */
+        }
+
+.drawer a {
+    display: block;
+    color: black;
+    margin: 15px 5px;
+    text-decoration: none;
+}
+
+.drawer a:hover {
+    color: #ff5722;
+}
+.align-left {
+    text-align: left;
+}
+
+.delete-btn {
+    background-color: #ff3d00;
+    color: white;
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+.back-btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.back-btn:hover {
+    background-color: #ff3d00;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Ensures some space above the button */
+}
+
+.btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 8px 12px; /* Reduced padding */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0; /* Adjusted margin */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #FFA500;
+    transform: scale(1.05); /* Slightly scale up the button */
+}
+
+/* Animation class */
+.animated-btn {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff; /* Change the background color if needed */
+    z-index: 9999;
+}
+
+.lottie-animation {
+    width: 200px;
+    height: 200px;
+}
+
+.hidden {
+    display: none;
+}
+
+.navigate-row {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navigate-column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.navigate-text {
+    color: black; /* Change text color to black */
+    padding: 8px 12px;
+    cursor: pointer; /* Make text clickable */
+    margin-top: 10px; /* Add some space between the items */
+}
+
+.input-field-wrapper {
+    position: relative;
+}
+
+.icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ccc;
+}
+
+.navigate-text {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.navigate-text i {
+    margin-right: 8px; /* Space between icon and text */
+}
+
+/* Bottom Navigation Bar */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    width: 100%; /* Ensure it takes the full width */
+    max-width: 600px; /* Ensure it aligns with the max-width of the container */
+    background-color: #ffffff;
+    border-top: 1px solid #ccc;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0;
+    box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Ensure it is above other elements */
+    margin: 0 auto; /* Center align */
+    left: 0;
+    right: 0;
+     display: none;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    color: #ff5722;
+    transition: color 0.3s ease;
+}
+
+.nav-item i {
+    font-size: 24px;
+}
+
+.nav-item span {
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+.nav-item:hover {
+    color: #ff3d00;
+}
+
+/* Media Queries for Mobile Adaptation */
+@media (max-width: 768px) {
+    .bottom-nav {
+        width: 100%;
+    }
+
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+
+    .tab-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab {
+        width: 100%;
+        text-align: center;
+        padding: 15px 0;
+    }
+}
+
+    .drawer {
+        width: 80%;
+        left: -80%;
+    }
+
+    .drawer.open {
+        left: 0;
+    }
+
+    .hamburger-menu {
+        left: 10px;
+    }
+
+    .bottom-nav {
+        width: 100%;
+    }
+
+    .navigate-text {
+        padding: 10px 0;
+        text-align: center;
+        width: 100%;
+    }
+}
+
+.tab-bar {
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-around;
+    border-bottom: 2px solid #ccc;
+}
+
+.tab {
+    padding: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.active-tab {
+    color: #ff5722;
+    border-bottom: 2px solid #ff5722;
+}
+
+.input-field-wrapper {
+    margin-bottom: 20px;
+}
+
+.input-field-wrapper label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+th, td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+/* Media Queries for Mobile Adaptation */
+@media (max-width: 768px) {
+    .tab-bar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .tab {
+        width: 100%;
+        text-align: center;
+        padding: 15px 0;
+    }
+}
+
+/* Modal Styles */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    z-index: 1000; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0); /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+/* Center the button inside the .button-container */
+.button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px; /* Ensure some space above the button */
+}
+
+.btn {
+    background-color: #ff5722;
+    color: white;
+    padding: 8px 12px; /* Reduced padding */
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin: 10px 0; /* Adjusted margin */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #FFA500;
+    transform: scale(1.05); /* Slightly scale up the button */
+}
+/* Chatbot Styles */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 200px);
+    background-color: #f5f5f5;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.chat-message {
+    max-width: 70%;
+    margin-bottom: 10px;
+    padding: 10px 15px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.bot-message {
+    background-color: #e3e3e3;
+    color: #333;
+    align-self: flex-start;
+    margin-right: auto;
+    border-bottom-left-radius: 5px;
+}
+
+.user-message {
+    background-color: #ff5722;
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+    border-bottom-right-radius: 5px;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 15px;
+    background-color: white;
+    border-top: 1px solid #ddd;
+}
+
+.chat-input {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    margin-right: 10px;
+    outline: none;
+}
+
+.chat-send-btn {
+    background-color: #ff5722;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chat-send-btn:hover {
+    background-color: #f4511e;
+}
+
+.message-time {
+    font-size: 0.7em;
+    margin-top: 5px;
+    opacity: 0.7;
+}
+.typing {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.typing:after {
+    content: '...';
+    animation: dots 1s steps(5, end) infinite;
+}
+
+@keyframes dots {
+    0%, 20% { content: ''; }
+    40% { content: '.'; }
+    60% { content: '..'; }
+    80%, 100% { content: '...'; }
+}
+// Add these CSS styles
+const styles = `
+    .chat-button-container {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        text-align: left;
+    }
+
+    .chat-action-button {
+        background-color: #ff5722;
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    .chat-action-button:hover {
+        background-color: #f4511e;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div id="lottie-animation" class="lottie-animation"></div>
+    </div>
+    <!-- Drawer -->
+    
+    <div id="drawer" class="drawer">
+        <a href="javascript:void(0);" onclick="showHome(); closeDrawer();"><i class="fa fa-home"></i> Home</a>
+        <a href="javascript:void(0);" onclick="showExpensePage(); closeDrawer();"><i class="fa fa-greater-than"></i> Track Expenses</a>
+        <a href="javascript:void(0);" onclick="showSettings(); closeDrawer();"><i class="fa fa-cog"></i> Settings</a>
+        <a href="javascript:void(0);" onclick="showAdminPage(); closeDrawer();"><i class="fa fa-user"></i> Admin Page</a>
+        <!-- In the drawer div -->
+<a href="javascript:void(0);" onclick="showChatbot(); closeDrawer();"><i class="fas fa-robot"></i> Chatbot</a>
+        <a href="javascript:void(0);" onclick="logout(); closeDrawer();"><i class="fa fa-sign-out-alt"></i> Logout</a>
+    </div>
+    
+    <!-- Login Page -->
+     <div id="login-page" class="container">
+        <h2>Login</h2>
+    
+        <div class="input-field-wrapper">
+            <input class="input-field" type="email" id="login-email" placeholder="Enter your email" required>
+            <i class="fa fa-envelope icon"></i>
+        </div>
+               <div class="input-field-wrapper">
+            <input class="input-field" type="password" id="login-password" placeholder="Enter your password" required>
+            <button type="button" class="toggle-button" id="toggle-login-password" onclick="togglePasswordVisibility('login-password', 'toggle-login-password')"><i class="fa fa-eye"></i></button>
+        </div>
+        <a href="javascript:void(0);" class="forgot-password" onclick="showForgotPassword()">Forgot Password?</a>
+        <div class="button-container">
+            <button class="btn" onclick="login()">Login</button>
+        </div>
+        <p>Don't have an account? <a href="javascript:void(0);" onclick="showSignup()">Sign Up</a></p>
+    </div>
+
+    <!-- Sign Up Page -->
+    <div id="signup-page" class="container hidden">
+        <h2>Sign Up</h2>
+        <div class="input-field-wrapper">
+            <label for="signup-name" style="text-align: left; width: 100%; margin-top: 10px;">Name</label>
+            <input class="input-field" type="text" id="signup-name" placeholder="Enter your name" required>
+        </div>
+        <div class="input-field-wrapper">
+            
+            <input class="input-field" type="email" id="signup-email" placeholder="Enter your email" required>
+            <i class="fa fa-envelope icon"></i>
+        </div>
+        <div class="input-field-wrapper">
+            
+            <input class="input-field" type="password" id="signup-password" placeholder="Enter your password" required>
+            <button type="button" class="toggle-button" id="toggle-signup-password" onclick="togglePasswordVisibility('signup-password', 'toggle-signup-password')"><i class="fa fa-eye"></i></button>
+        </div>
+        <div class="input-field-wrapper">
+            <label for="salary-type" style="text-align: left; width: 100%; margin-top: 10px;">Salary Type</label>
+            <select class="input-field" id="salary-type" required>
+                <option value="monthly">Monthly</option>
+                <option value="daily">Daily</option>
+            </select>
+        </div>
+        <div class="input-field-wrapper">
+            <label for="salary-amount" style="text-align: left; width: 100%; margin-top: 10px;">Salary</label>
+            <input class="input-field" type="number" id="salary-amount" placeholder="Enter your salary" required>
+        </div>
+        <button class="btn" onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="javascript:void(0);" onclick="showLogin()">Login</a></p>
+    </div>
+
+    <!-- OTP Verification Page -->
+<div id="otp-verification-page" class="container hidden">
+    <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+    <h2>Verify OTP</h2>
+    <p>Enter the OTP sent to your email address.</p>
+    <div class="input-field-wrapper">
+        <input class="input-field" type="text" id="otp-input" placeholder="Enter OTP" required>
+    </div>
+    <div class="button-container">
+        <button class="btn" onclick="verifyOtp()">Verify OTP</button>
+    </div>
+    <button class="back-btn" onclick="showSignup()">Back to Sign Up</button>
+</div>
+
+    <div id="home-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <div class="overlay">
+            <h2 class="home-widget">WELCOME !!</h2>
+            <p class="home-widget"><span id="user-name"></span></p>
+            <p class="home-widget">|Total Expenses|<span id="home-total-expenses">0 INR</span></p>
+            <p class="home-widget">|Remaining Balance|<span id="home-remaining-salary">0 INR</span></p>
+            <div class="button-container">
+                <button class="btn home-widget animated-btn" onclick="showExpensePage()">Track Your Expenses Click Here>></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="expense-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Track Expenses</h2>
+        <div class="tab-bar">
+            <div class="tab active-tab" onclick="showTab('add-expense')">Add Expense</div>
+            <div class="tab" onclick="showTab('view-expenses')">View Expenses</div>
+        </div>
+        <div id="add-expense-tab" class="align-left">
+            <label for="expense-category" class="input-label">Category</label>
+            <select class="input-field" id="expense-category" required>
+                <option value="petrol">Petrol</option>
+                <option value="hospital">Hospital</option>
+                <option value="grocery">Grocery</option>
+                <option value="movies">Movies</option>
+                <option value="recharge">Recharge</option>
+                <option value="medicine">Medicine</option>
+                <option value="cosmetic">Cosmetic</option>
+                <option value="dresses">Dresses</option>
+                <option value="travel">Travel</option>
+                <option value="friends">Travel</option>
+                <option value="others">Others</option>
+            </select>
+            <label for="expense-amount" class="input-label">Amount</label>
+            <input class="input-field" type="number" id="expense-amount" placeholder="Enter amount in INR" required>
+            <label for="expense-date" class="input-label">Date</label>
+            <input class="input-field" type="date" id="expense-date" required>
+            <div class="button-container">
+        <button class="btn" onclick="saveExpense()">Save Expense</button>
+    </div>
+    </div>
+        <div id="view-expenses-tab" class="hidden align-left">
+            <h3>Your Expenses</h3>
+            <div id="expense-table-container">
+                <table id="expense-table">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Amount </th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Expenses will be shown here -->
+                    </tbody>
+                </table>
+            </div>
+            <h4>Total Expenses: <span id="total-expenses">0 INR</span></h4>
+        </div>
+        <button class="btn" id="overall-expense-button" onclick="showOverallExpensePage()">Overall Expense</button>
+    </div>
+    
+    <div id="settings-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Settings</h2>
+        <p>User Email: <span id="user-email"></span></p>
+        <div class="navigate-column">
+            <span class="navigate-text" onclick="showEditNamePage()" style="cursor: pointer;"><i class="fa fa-edit"></i>Edit Name</span>
+            <span class="navigate-text" onclick="showEditSalaryPage()" style="cursor: pointer;"><i class="fa fa-edit"></i>Edit Salary</span>
+        </div>
+    </div>
+
+    <div id="edit-name-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Edit Name</h2>
+        <label for="edit-user-name-input" class="input-label">Edit Name</label>
+        <input class="input-field" type="text" id="edit-user-name-input" placeholder="Enter your new name" required>
+        <button class="btn" onclick="updateUserName()">Update Name</button>
+        <button class="back-btn" onclick="showSettings()">Back to Settings</button>
+    </div>
+
+    <div id="edit-salary-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Edit Salary</h2>
+        <label for="edit-salary-amount" class="input-label">Edit Salary</label>
+        <input class="input-field" type="number" id="edit-salary-amount-input" placeholder="Enter your new salary" required>
+        <button class="btn" onclick="updateSalary()">Update Salary</button>
+        <button class="back-btn" onclick="showSettings()">Back to Settings</button>
+    </div>
+
+    <div id="overall-expense-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Overall Expenses</h2>
+        <div id="overall-expense-details">
+            <h3>Salary: <span id="overall-salary"></span></h3>
+            <h3>Total Expenses: <span id="overall-total-expenses"></span></h3>
+            <h3>Remaining balance: <span id="remaining-salary"></span></h3>
+        </div>
+        <canvas id="monthly-expenses-chart" width="400" height="200"></canvas>
+        <canvas id="yearly-expenses-chart" width="400" height="200"></canvas>
+        <button class="back-btn" onclick="showExpensePage()">Back to Add Expense</button>
+    </div>
+
+    <div id="monthly-expense-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Monthly Expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Overall Monthly Expenses</th>
+                    <th>Salary</th>
+                    <th>Remaining Balance</th>
+                </tr>
+            </thead>
+            <tbody id="monthly-expense-table-body">
+                <!-- Monthly expenses will be shown here -->
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="closeMonthlyExpensePage()">Back</button>
+    </div>
+
+    <div id="yearly-expense-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Yearly Expenses</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Year</th>
+                    <th>Overall Yearly Expenses</th>
+                    <th>Salary</th>
+                    <th>Remaining Balance</th>
+                </tr>
+            </thead>
+            <tbody id="yearly-expense-table-body">
+                <!-- Yearly expenses will be shown here -->
+            </tbody>
+        </table>
+        <button class="back-btn" onclick="closeYearlyExpensePage()">Back</button>
+    </div>
+
+    <div id="admin-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Admin Page</h2>
+        <p>welcome IMRAN !!</p>
+        <div class="tab-bar">
+            <div class="tab active-tab" onclick="showAdminTab('view-users')">View Users</div>
+            <div class="tab" onclick="showAdminTab('add-user')">Add User</div>
+        </div>
+        <div id="view-users-tab">
+            <h3>User Information</h3>
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Salary Type</th>
+                        <th>Salary Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-user-info">
+                    <!-- User information will be shown here -->
+                </tbody>
+            </table>
+        </div>
+        <div id="add-user-tab" class="hidden">
+            <h3>Add User</h3>
+            <input class="input-field" type="text" id="add-user-name" placeholder="Enter user name" required>
+            <input class="input-field" type="email" id="add-user-email" placeholder="Enter user email" required>
+            <input class="input-field" type="password" id="add-user-password" placeholder="Enter user password" required>
+            <select class="input-field" id="add-user-salary-type" required>
+                <option value="monthly">Monthly</option>
+                <option value="daily">Daily</option>
+            </select>
+            <input class="input-field" type="number" id="add-user-salary-amount" placeholder="Enter user salary in INR" required>
+            <button class="btn" onclick="addUser()">Add User</button>
+        </div>
+    </div>
+
+    <div id="forgot-password-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>Forgot Password</h2>
+        <p>Enter your email address to receive a password reset link.</p>
+        <div class="input-field-wrapper">
+            <input class="input-field" type="email" id="forgot-password-email" placeholder="Enter your email" required>
+            <i class="fa fa-envelope icon"></i>
+        </div>
+        <div class="button-container">
+            <button class="btn" onclick="sendPasswordResetEmail()">Send Reset Link</button>
+        </div>
+        <button class="back-btn" onclick="showLogin()">Back to Login</button>
+    </div>
+
+   <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <div class="nav-item" onclick="showHome()">
+            <i class="fa fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" onclick="showToDoListPage()">
+            <i class="fa fa-list"></i>
+            <span>To-Do List</span>
+        </div>    
+            <div class="nav-item" onclick="showChatbot()">
+        <i class="fas fa-robot"></i>
+        <span>Chatbot</span>
+    </div>    
+        <div class="nav-item" onclick="showSettings()">
+            <i class="fa fa-cog"></i>
+            <span>Settings</span>
+        </div>
+    </div>
+    <!-- Confirmation Modal for Salary Update -->
+    <div id="salary-confirmation-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeSalaryModal()">&times;</span>
+            <p>Do you want to edit your salary?</p>
+            <button class="btn" onclick="confirmUpdateSalary()">Yes</button>
+            <button class="btn" onclick="closeSalaryModal()">No</button>
+        </div>
+    </div>
+    <!-- Confirmation Modal for Logout -->
+    <div id="logout-confirmation-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeLogoutModal()">&times;</span>
+            <p>Do you want to logout?</p>
+            <button class="btn" onclick="confirmLogout()">Yes</button>
+            <button class="btn" onclick="closeLogoutModal()">No</button>
+        </div>
+    </div>
+    <div id="todo-list-page" class="container hidden">
+        <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+        <h2>To-Do List</h2>
+        <div class="input-field-wrapper">
+            <label for="todo-date" class="input-label">Date</label>
+            <input class="input-field" type="date" id="todo-date" required>
+        </div>
+        <div class="input-field-wrapper">
+            <label for="todo-description" class="input-label">To-Do List</label>
+            <input class="input-field" type="text" id="todo-description" placeholder="Enter your task" required>
+        </div>
+        <button class="btn" onclick="addToDo()">Add To-Do</button>
+        <h3>Your To-Do List</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>To-Do List</th>
+                    <th>Action</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="todo-table-body">
+                <!-- To-Do tasks will be shown here -->
+            </tbody>
+        </table>
+    </div>
+   <div id="chatbot-page" class="container hidden">
+    <div class="hamburger-menu" id="hamburger-menu" onclick="toggleDrawer()">&#9776;</div>
+    <h2>Chatbot</h2>
+    <div class="chat-container">
+        <div id="chat-messages" class="chat-messages">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input-container">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type your message...">
+            <button class="chat-send-btn" onclick="sendMessage()">
+                <i class="fa fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            emailjs.init("LVF6awLVL9ppJZHKJ"); // Replace with your actual Public Key
+        })();
+    </script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.20.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.7.6/lottie.min.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDGJkul6pLlhrSC-7_R8doDgahVJePb0x8",
+            authDomain: "expensive-tracker-a4c2b.firebaseapp.com",
+            databaseURL: "https://expensive-tracker-a4c2b-default-rtdb.firebaseio.com",
+            projectId: "expensive-tracker-a4c2b",
+            storageBucket: "expensive-tracker-a4c2b.firebasestorage.app",
+            messagingSenderId: "1032556607871",
+            appId: "1:1032556607871:web:8dabecf9ef9fc13d1f024a",
+            measurementId: "G-W61HQCKKB3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        // Add this at the top of your script section
+       let lastMessageContext = ''; // This will track what we're talking about     
+
+        let generatedOtp = '';
+
+            function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        function sendOtpEmail(name, email, otp) {
+            if (!validateEmail(email)) {
+                console.error('Invalid email address format:', email);
+                alert('Invalid email address format. Please enter a valid email.');
+                return;
+            }
+
+            const templateParams = {
+                name: name,
+                otp: otp,
+                to_email:email // Ensure the correct email parameter is used
+            };
+
+            console.log('Sending OTP email with parameters:', templateParams); // Add logging
+
+            emailjs.send('service_uu9h5oa', 'template_udh6ejt', templateParams).then(
+                (response) => {
+                    console.log('SUCCESS!', response.status, response.text);
+                    alert('OTP sent to your email. Please verify.');
+                },
+                (error) => {
+                    console.log('FAILED...', error);
+                    alert('Failed to send OTP. Please try again.');
+                }
+            );
+        }
+
+        function signup() {
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const salaryType = document.getElementById('salary-type').value;
+            const salaryAmount = document.getElementById('salary-amount').value;
+
+            if (!name || !email || !password || !salaryType || !salaryAmount) {
+                alert('Please fill in all the required fields.');
+                return;
+            }
+
+            // Generate a 6-digit OTP
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+
+            sendOtpEmail(name, email, generatedOtp);
+
+            // Store signup details temporarily
+            localStorage.setItem('tempSignupDetails', JSON.stringify({
+                email: email,
+                password: password,
+                name: name,
+                salaryType: salaryType,
+                salaryAmount: salaryAmount
+            }));
+
+            showOtpVerificationPage();
+        }
+
+        function showOtpVerificationPage() {
+            document.getElementById('otp-verification-page').classList.remove('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+        }
+
+        function verifyOtp() {
+            const enteredOtp = document.getElementById('otp-input').value;
+            const tempSignupDetails = JSON.parse(localStorage.getItem('tempSignupDetails'));
+
+            if (enteredOtp === generatedOtp) {
+                firebase.auth().createUserWithEmailAndPassword(tempSignupDetails.email, tempSignupDetails.password).then(userCredential => {
+                    const user = userCredential.user;
+                    const userRef = firebase.firestore().collection('users').doc(user.uid);
+
+                    userRef.set({
+                        name: tempSignupDetails.name,
+                        salaryType: tempSignupDetails.salaryType,
+                        salaryAmount: tempSignupDetails.salaryAmount,
+                        creationDate: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        alert("User signed up successfully!");
+                        localStorage.removeItem('tempSignupDetails');
+                        showHome();
+                    }).catch(error => {
+                        alert(error.message);
+                    });
+                }).catch(error => {
+                    alert(error.message);
+                });
+            } else {
+                alert('Invalid OTP. Please try again.');
+            }
+        }
+
+        function showSignup() {
+            document.getElementById('signup-page').classList.remove('hidden');
+            document.getElementById('otp-verification-page').classList.add('hidden');
+        }
+
+    // Splash screen animation
+    document.addEventListener('DOMContentLoaded', function () {
+        var animation = lottie.loadAnimation({
+            container: document.getElementById('lottie-animation'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://lottie.host/5dcdd510-5ad9-417d-8a02-840e2a3107b0/L6qLIk7BWe.json' // Replace with the path to your Lottie animation JSON file
+        });
+
+        setTimeout(function () {
+            document.getElementById('splash-screen').style.display = 'none';
+            document.getElementById('main-content').classList.remove('hidden');
+        }, 3000); // Adjust the timeout duration as needed
+    });
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('open');
+        }
+
+        function closeDrawer() {
+            document.getElementById('drawer').classList.remove('open');
+        }
+  function login() {
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+
+        firebase.auth().signInWithEmailAndPassword(email, password).then(userCredential => {
+            const user = userCredential.user;
+            userRef = firebase.firestore().collection('users').doc(user.uid);
+
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    document.getElementById('user-name').textContent = userData.name.toUpperCase();
+                    showHome();
+                } else {
+                    alert("No user data found!");
+                }
+            }).catch(error => {
+                alert(error.message);
+            });
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+        function showHome() {
+        hideAllPages();
+        const user = firebase.auth().currentUser;
+        if (user) {
+            userRef = firebase.firestore().collection('users').doc(user.uid);
+            userRef.get().then(doc => {
+                if (doc.exists) {
+                    const userData = doc.data();
+                    document.getElementById('user-name').textContent = userData.name.toUpperCase();
+                    loadTotalExpensesAndRemainingSalary();
+                } else {
+                    alert("No user data found!");
+                }
+            }).catch(error => {
+                alert(error.message);
+            });
+        } else {
+            alert("No authenticated user found. Please log in again.");
+        }
+
+        document.getElementById('home-page').classList.remove('hidden');
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+        document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+    }
+
+    function showEditNamePage() {
+        document.getElementById('edit-name-page').classList.remove('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+    }
+
+    function showEditSalaryPage() {
+        document.getElementById('edit-salary-page').classList.remove('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+    }
+
+    function showSettings() {
+        hideAllPages();
+        document.getElementById('settings-page').classList.remove('hidden');
+        document.getElementById('edit-name-page').classList.add('hidden');
+        document.getElementById('edit-salary-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+        document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                document.getElementById('user-email').textContent = firebase.auth().currentUser.email;
+            } else {
+                alert("No user data found!");
+            }
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+function updateUserName() {
+    const newUserName = document.getElementById('edit-user-name-input').value;
+    if (newUserName) {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            const userRef = firebase.firestore().collection('users').doc(user.uid);
+            userRef.update({
+                name: newUserName
+            }).then(() => {
+                alert("User name updated successfully!");
+                document.getElementById('user-name').textContent = newUserName.toUpperCase(); // Update the displayed name
+                showSettings(); // Return to the settings page
+            }).catch(error => {
+                alert("Error updating user name: " + error.message);
+            });
+        } else {
+            alert("User not authenticated. Please log in again.");
+        }
+    } else {
+        alert("Please enter a valid user name.");
+    }
+}
+
+function showModal() {
+    document.getElementById('confirmation-modal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('confirmation-modal').style.display = 'none';
+}
+
+function confirmUpdateUserName() {
+    const newUserName = document.getElementById('edit-user-name-input').value;
+    userRef.update({
+        name: newUserName
+    }).then(() => {
+        alert("User name updated successfully!");
+        closeModal();
+        showSettings();
+    }).catch(error => {
+        alert(error.message);
+    });
+}
+function updateSalary() {
+    const newSalaryAmount = document.getElementById('edit-salary-amount-input').value;
+    if (newSalaryAmount) {
+        showSalaryModal();
+    } else {
+        alert("Please enter a valid salary amount.");
+    }
+}
+
+function showSalaryModal() {
+    document.getElementById('salary-confirmation-modal').classList.remove('hidden');
+    document.getElementById('salary-confirmation-modal').style.display = 'flex';
+}
+
+function closeSalaryModal() {
+    document.getElementById('salary-confirmation-modal').classList.add('hidden');
+    document.getElementById('salary-confirmation-modal').style.display = 'none';
+}
+
+function confirmUpdateSalary() {
+    const newSalaryAmount = document.getElementById('edit-salary-amount-input').value;
+    userRef.update({
+        salaryAmount: newSalaryAmount
+    }).then(() => {
+        alert("Salary updated successfully!");
+        closeSalaryModal();
+        showSettings();
+    }).catch(error => {
+        alert(error.message);
+    });
+}
+    function saveExpense() {
+        const user = firebase.auth().currentUser;
+
+        if (user) {
+            userRef = firebase.firestore().collection('users').doc(user.uid);
+
+            const category = document.getElementById('expense-category').value;
+            const amount = parseFloat(document.getElementById('expense-amount').value);
+            const date = document.getElementById('expense-date').value;
+
+            if (category && amount && date) {
+                const newExpense = {
+                    category: category,
+                    amount: amount,
+                    date: date
+                };
+
+                userRef.collection('expenses').add(newExpense)
+                    .then(() => {
+                        alert("Expense saved successfully!");
+                        clearExpenseForm();
+                        loadExpenses();
+                    })
+                    .catch(error => {
+                        console.error("Error saving expense: ", error);
+                        alert("Failed to save the expense. Please try again.");
+                    });
+            } else {
+                alert("Please fill in all the required fields.");
+            }
+        } else {
+            alert("User not authenticated. Please log in again.");
+        }
+    }
+    // Show To-Do List Page
+function showToDoListPage() {
+    hideAllPages();
+    document.getElementById('todo-list-page').classList.remove('hidden');
+    document.getElementById('hamburger-menu').style.display = 'block';
+    document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+    loadToDos();
+}
+
+// Add To-Do Task
+function addToDo() {
+    const user = firebase.auth().currentUser;
+    if (user) {
+        userRef = firebase.firestore().collection('users').doc(user.uid);
+
+        const date = document.getElementById('todo-date').value;
+        const description = document.getElementById('todo-description').value;
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+        if (date && description) {
+            const newToDo = {
+                date: date,
+                time: time,
+                description: description,
+                status: 'Not Done'
+            };
+
+            userRef.collection('todos').add(newToDo)
+                .then(() => {
+                    alert("To-Do task added successfully!");
+                    clearToDoForm();
+                    loadToDos();
+                })
+                .catch(error => {
+                    console.error("Error adding To-Do task: ", error);
+                    alert("Failed to add the To-Do task. Please try again.");
+                });
+        } else {
+            alert("Please fill in all the required fields.");
+        }
+    } else {
+        alert("User not authenticated. Please log in again.");
+    }
+}
+
+// Clear To-Do Form
+function clearToDoForm() {
+    document.getElementById('todo-date').value = '';
+    document.getElementById('todo-description').value = '';
+}
+
+// Load To-Do Tasks
+function loadToDos() {
+    userRef.collection('todos').get().then(snapshot => {
+        let toDosHtml = '';
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            toDosHtml += `
+                <tr>
+                    <td>${data.date}</td>
+                    <td>${data.time}</td>
+                    <td>${data.description}</td>
+                    <td>${data.status}</td>
+                    <td>
+                        <button class="btn" onclick="updateToDoStatus('${doc.id}', '${data.status}')">${data.status === 'Done' ? 'Not Done' : 'Done'}</button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        document.getElementById('todo-table-body').innerHTML = toDosHtml;
+    }).catch(error => {
+        console.error("Error loading To-Do tasks: ", error);
+    });
+}
+
+// Update To-Do Task Status
+function updateToDoStatus(taskId, currentStatus) {
+    const newStatus = currentStatus === 'Done' ? 'Not Done' : 'Done';
+    userRef.collection('todos').doc(taskId).update({
+        status: newStatus
+    }).then(() => {
+        alert("To-Do task status updated successfully!");
+        loadToDos();
+    }).catch(error => {
+        console.error("Error updating To-Do task status: ", error);
+        alert("Failed to update the To-Do task status. Please try again.");
+    });
+}
+
+    function clearExpenseForm() {
+        document.getElementById('expense-category').value = '';
+        document.getElementById('expense-amount').value = '';
+        document.getElementById('expense-date').value = '';
+    }
+
+    function loadExpenses() {
+        userRef.collection('expenses').get().then(snapshot => {
+            let expensesHtml = '';
+            let totalExpenses = 0;
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                totalExpenses += parseFloat(data.amount);
+                expensesHtml += `
+                    <tr>
+                        <td>${data.category}</td>
+                        <td>${data.amount} INR</td>
+                        <td>${data.date}</td>
+                        <td><button class="delete-btn" onclick="deleteExpense('${doc.id}')">Delete</button></td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('expense-table').querySelector('tbody').innerHTML = expensesHtml;
+            document.getElementById('total-expenses').textContent = `${totalExpenses} INR`;
+        }).catch(error => {
+            console.error("Error loading expenses: ", error);
+        });
+    }
+
+    function deleteExpense(expenseId) {
+        userRef.collection('expenses').doc(expenseId).delete().then(() => {
+            alert("Expense deleted successfully!");
+            loadExpenses();
+            loadTotalExpensesAndRemainingSalary();
+        }).catch(error => {
+            console.error("Error deleting expense: ", error);
+            alert("Failed to delete the expense. Please try again.");
+        });
+    }
+
+    function togglePasswordVisibility(inputId, toggleButtonId) {
+        const inputField = document.getElementById(inputId);
+        const toggleButton = document.getElementById(toggleButtonId);
+        const icon = toggleButton.querySelector('i');
+
+        if (inputField.type === "password") {
+            inputField.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            inputField.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    function loadTotalExpensesAndRemainingSalary() {
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const salaryAmount = parseFloat(userData.salaryAmount);
+                let totalExpenses = 0;
+
+                userRef.collection('expenses').get().then(snapshot => {
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        totalExpenses += parseFloat(data.amount);
+                    });
+
+                    const remainingSalary = salaryAmount - totalExpenses;
+
+                    document.getElementById('home-total-expenses').textContent = `${totalExpenses} INR`;
+                    document.getElementById('home-remaining-salary').textContent = `${remainingSalary} INR`;
+                }).catch(error => {
+                    console.error("Error loading expenses: ", error);
+                });
+            } else {
+                alert("No user data found!");
+            }
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+    function showLogin() {
+        document.getElementById('login-page').classList.remove('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('forgot-password-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'none';
+        document.querySelector('.bottom-nav').style.display = 'none'; // Hide bottom navigation bar
+    }
+
+    function showSignup() {
+    document.getElementById('signup-page').classList.remove('hidden');
+    document.getElementById('otp-verification-page').classList.add('hidden');
+    document.getElementById('login-page').classList.add('hidden');
+    document.getElementById('home-page').classList.add('hidden');
+    document.getElementById('expense-page').classList.add('hidden');
+    document.getElementById('settings-page').classList.add('hidden');
+    document.getElementById('overall-expense-page').classList.add('hidden');
+    document.getElementById('monthly-expense-page').classList.add('hidden');
+    document.getElementById('yearly-expense-page').classList.add('hidden');
+    document.getElementById('admin-page').classList.add('hidden');
+    document.getElementById('forgot-password-page').classList.add('hidden');
+    document.getElementById('hamburger-menu').style.display = 'none';
+    document.querySelector('.bottom-nav').style.display = 'none'; // Hide bottom navigation bar
+}
+
+    function showExpensePage() {
+        hideAllPages();
+        document.getElementById('expense-page').classList.remove('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('forgot-password-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+        document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+        loadExpenses();
+    }
+
+function logout() {
+    showLogoutModal();
+}
+
+function showLogoutModal() {
+    document.getElementById('logout-confirmation-modal').classList.remove('hidden');
+    document.getElementById('logout-confirmation-modal').style.display = 'flex';
+}
+
+function closeLogoutModal() {
+    document.getElementById('logout-confirmation-modal').classList.add('hidden');
+    document.getElementById('logout-confirmation-modal').style.display = 'none';
+}
+
+function confirmLogout() {
+    firebase.auth().signOut().then(() => {
+        closeLogoutModal();
+        showLogin();
+        document.getElementById('hamburger-menu').style.display = 'none';
+        document.getElementById('drawer').classList.remove('open');
+        clearLoginForm();
+    }).catch(error => {
+        alert(error.message);
+    });
+}
+
+    function clearLoginForm() {
+        document.getElementById('login-email').value = '';
+        document.getElementById('login-password').value = '';
+    }
+
+    function showTab(tabName) {
+        if (tabName === 'add-expense') {
+            document.getElementById("add-expense-tab").classList.remove('hidden');
+            document.getElementById("view-expenses-tab").classList.add('hidden');
+            document.querySelector(".tab.active-tab").classList.remove('active-tab');
+            document.querySelectorAll(".tab")[0].classList.add('active-tab');
+        } else if (tabName === 'view-expenses') {
+            document.getElementById("view-expenses-tab").classList.remove('hidden');
+            document.getElementById("add-expense-tab").classList.add('hidden');
+            document.querySelector(".tab.active-tab").classList.remove('active-tab');
+            document.querySelectorAll(".tab")[1].classList.add('active-tab');
+            loadExpenses();
+        }
+    }
+
+    function showOverallExpensePage() {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.remove('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const salaryAmount = parseFloat(userData.salaryAmount);
+                document.getElementById('overall-salary').textContent = `${salaryAmount} INR`;
+
+                userRef.collection('expenses').get().then(snapshot => {
+                    let totalExpense = 0;
+                    let monthlyExpenses = {};
+                    let yearlyExpenses = {};
+
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const amount = parseFloat(data.amount);
+                        totalExpense += amount;
+
+                        const month = data.date.slice(0, 7);
+                        if (monthlyExpenses[month]) {
+                            monthlyExpenses[month] += amount;
+                        } else {
+                            monthlyExpenses[month] = amount;
+                        }
+
+                        const year = data.date.slice(0, 4);
+                        if (yearlyExpenses[year]) {
+                            yearlyExpenses[year] += amount;
+                        } else {
+                            yearlyExpenses[year] = amount;
+                        }
+                    });
+
+                    document.getElementById('overall-total-expenses').textContent = `${totalExpense} INR`;
+                    document.getElementById('remaining-salary').textContent = `${salaryAmount - totalExpense} INR`;
+
+                    const monthlyExpenseLabels = Object.keys(monthlyExpenses);
+                    const monthlyExpenseData = Object.values(monthlyExpenses);
+
+                    renderMonthlyExpensesChart(monthlyExpenseLabels, monthlyExpenseData);
+
+                    const yearlyExpenseLabels = Object.keys(yearlyExpenses);
+                    const yearlyExpenseData = Object.values(yearlyExpenses);
+
+                    renderYearlyExpensesChart(yearlyExpenseLabels, yearlyExpenseData);
+                }).catch(error => {
+                    console.error("Error loading expenses: ", error);
+                });
+            } else {
+                alert("No user data found!");
+            }
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+    function renderMonthlyExpensesChart(labels, data) {
+        const ctx = document.getElementById('monthly-expenses-chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Monthly Expenses (INR)',
+                    data: data,
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                onClick: (e, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const month = labels[index];
+                        showMonthlyExpenseDetail(month);
+                    }
+                }
+            }
+        });
+    }
+
+    function renderYearlyExpensesChart(labels, data) {
+        const ctx = document.getElementById('yearly-expenses-chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Yearly Expenses (INR)',
+                    data: data,
+                    backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                onClick: (e, elements) => {
+                    if (elements.length > 0) {
+                        const index = elements[0].index;
+                        const year = labels[index];
+                        showYearlyExpenseDetail(year);
+                    }
+                }
+            }
+        });
+    }
+
+    function showMonthlyExpenseDetail(month) {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.remove('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const salaryAmount = parseFloat(userData.salaryAmount);
+
+                userRef.collection('expenses').where('date', '>=', `${month}-01`).where('date', '<=', `${month}-31`).get().then(snapshot => {
+                    let totalMonthlyExpense = 0;
+
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const amount = parseFloat(data.amount);
+                        totalMonthlyExpense += amount;
+                    });
+
+                    const remainingBalance = salaryAmount - totalMonthlyExpense;
+
+                    document.getElementById('monthly-expense-table-body').innerHTML = `
+                        <tr>
+                            <td>${month}</td>
+                            <td>${totalMonthlyExpense} INR</td>
+                            <td>${salaryAmount} INR</td>
+                            <td>${remainingBalance} INR</td>
+                        </tr>
+                    `;
+                }).catch(error => {
+                    console.error("Error loading monthly expenses: ", error);
+                });
+            } else {
+                alert("No user data found!");
+            }
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+    function closeMonthlyExpensePage() {
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.remove('hidden');
+    }
+
+    function showYearlyExpenseDetail(year) {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.remove('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+
+        userRef.get().then(doc => {
+            if (doc.exists) {
+                const userData = doc.data();
+                const salaryAmount = parseFloat(userData.salaryAmount);
+
+                userRef.collection('expenses').where('date', '>=', `${year}-01-01`).where('date', '<=', `${year}-12-31`).get().then(snapshot => {
+                    let totalYearlyExpense = 0;
+
+                    snapshot.forEach(doc => {
+                        const data = doc.data();
+                        const amount = parseFloat(data.amount);
+                        totalYearlyExpense += amount;
+                    });
+
+                    const remainingBalance = salaryAmount - totalYearlyExpense;
+
+                    document.getElementById('yearly-expense-table-body').innerHTML = `
+                        <tr>
+                            <td>${year}</td>
+                            <td>${totalYearlyExpense} INR</td>
+                            <td>${salaryAmount} INR</td>
+                            <td>${remainingBalance} INR</td>
+                        </tr>
+                    `;
+                }).catch(error => {
+                    console.error("Error loading yearly expenses: ", error);
+                });
+            } else {
+                alert("No user data found!");
+            }
+        }).catch(error => {
+            alert(error.message);
+        });
+    }
+
+    function closeYearlyExpensePage() {
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.remove('hidden');
+    }
+
+    function showAdminPage() {
+        const user = firebase.auth().currentUser;
+        if (user && user.email === 'iimraniimran4@gmail.com'){
+            hideAllPages();
+            document.getElementById('admin-page').classList.remove('hidden');
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('signup-page').classList.add('hidden');
+            document.getElementById('home-page').classList.add('hidden');
+            document.getElementById('expense-page').classList.add('hidden');
+            document.getElementById('settings-page').classList.add('hidden');
+            document.getElementById('overall-expense-page').classList.add('hidden');
+            document.getElementById('monthly-expense-page').classList.add('hidden');
+            document.getElementById('yearly-expense-page').classList.add('hidden');
+            document.getElementById('hamburger-menu').style.display = 'block';
+            document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+            loadAllUsers();
+        } else {
+            alert("Access denied: Admin page is only accessible to the Admin.");
+        }
+    }
+
+    function showAdminTab(tabName) {
+        if (tabName === 'view-users') {
+            document.getElementById('view-users-tab').classList.remove('hidden');
+            document.getElementById('add-user-tab').classList.add('hidden');
+            document.querySelector(".tab.active-tab").classList.remove('active-tab');
+            document.querySelectorAll(".tab")[0].classList.add('active-tab');
+            loadAllUsers();
+        } else if (tabName === 'add-user') {
+            document.getElementById('add-user-tab').classList.remove('hidden');
+            document.getElementById('view-users-tab').classList.add('hidden');
+            document.querySelector(".tab.active-tab").classList.remove('active-tab');
+            document.querySelectorAll(".tab")[1].classList.add('active-tab');
+        }
+    }
+
+    async function loadAllUsers() {
+        try {
+            const snapshot = await firebase.firestore().collection('users').get();
+            let usersHtml = '';
+            for (const doc of snapshot.docs) {
+                const data = doc.data();
+                const userId = doc.id;
+                const userEmail = data.email; // Get the user email directly from Firestore
+                usersHtml += `
+                    <tr>
+                        <td>${data.name}</td>
+                        <td>${userEmail}</td>
+                        <td>${data.salaryType}</td>
+                        <td>${data.salaryAmount} INR</td>
+                        <td><button class="delete-btn" onclick="deleteUser('${userId}')">Delete</button></td>
+                    </tr>
+                `;
+            }
+            document.getElementById('admin-user-info').innerHTML = usersHtml;
+        } catch (error) {
+            console.error("Error loading users: ", error);
+        }
+    }
+
+    function addUser() {
+        const name = document.getElementById('add-user-name').value;
+        const email = document.getElementById('add-user-email').value;
+        const password = document.getElementById('add-user-password').value;
+        const salaryType = document.getElementById('add-user-salary-type').value;
+        const salaryAmount = document.getElementById('add-user-salary-amount').value;
+
+        firebase.auth().createUserWithEmailAndPassword(email, password).then(async (userCredential) => {
+            const user = userCredential.user;
+            const userRef = firebase.firestore().collection('users').doc(user.uid);
+
+            await userRef.set({
+                name: name,
+                email: email, // Save the email in Firestore
+                salaryType: salaryType,
+                salaryAmount: salaryAmount,
+                creationDate: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("User added successfully!");
+            showAdminTab('view-users');
+            loadAllUsers(); // Reload users to reflect changes
+        }).catch((error) => {
+            alert(error.message);
+        });
+    }
+
+    function deleteUser(userId) {
+        firebase.firestore().collection('users').doc(userId).delete().then(() => {
+            alert("User deleted successfully!");
+            loadAllUsers(); // Reload users to reflect changes
+        }).catch((error) => {
+            console.error("Error deleting user: ", error);
+            alert("Failed to delete the user. Please try again.");
+        });
+    }
+
+    function sendPasswordResetEmail() {
+        const email = document.getElementById('forgot-password-email').value;
+        if (email) {
+            firebase.auth().sendPasswordResetEmail(email)
+                .then(() => {
+                    alert('Password reset email sent!');
+                    showLogin();
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        } else {
+            alert('Please enter a valid email address.');
+        }
+    }
+
+    function showForgotPassword() {
+        hideAllPages();
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('signup-page').classList.add('hidden');
+        document.getElementById('home-page').classList.add('hidden');
+        document.getElementById('expense-page').classList.add('hidden');
+        document.getElementById('settings-page').classList.add('hidden');
+        document.getElementById('overall-expense-page').classList.add('hidden');
+        document.getElementById('monthly-expense-page').classList.add('hidden');
+        document.getElementById('yearly-expense-page').classList.add('hidden');
+        document.getElementById('admin-page').classList.add('hidden');
+        document.getElementById('forgot-password-page').classList.remove('hidden');
+        document.getElementById('hamburger-menu').style.display = 'none';
+    }
+    // Existing JavaScript code...
+
+    // Add the new functions here...
+
+    // Show To-Do List Page
+    function showToDoListPage() {
+        hideAllPages();
+        document.getElementById('todo-list-page').classList.remove('hidden');
+        document.getElementById('hamburger-menu').style.display = 'block';
+        document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+        loadToDos();
+    }
+
+    // Add To-Do Task
+    function addToDo() {
+        const user = firebase.auth().currentUser;
+        if (user) {
+            userRef = firebase.firestore().collection('users').doc(user.uid);
+
+            const date = document.getElementById('todo-date').value;
+            const description = document.getElementById('todo-description').value;
+            const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            if (date && description) {
+                const newToDo = {
+                    date: date,
+                    time: time,
+                    description: description,
+                    status: 'Not Done'
+                };
+
+                userRef.collection('todos').add(newToDo)
+                    .then(() => {
+                        alert("To-Do task added successfully!");
+                        clearToDoForm();
+                        loadToDos();
+                    })
+                    .catch(error => {
+                        console.error("Error adding To-Do task: ", error);
+                        alert("Failed to add the To-Do task. Please try again.");
+                    });
+            } else {
+                alert("Please fill in all the required fields.");
+            }
+        } else {
+            alert("User not authenticated. Please log in again.");
+        }
+    }
+
+    // Clear To-Do Form
+    function clearToDoForm() {
+        document.getElementById('todo-date').value = '';
+        document.getElementById('todo-description').value = '';
+    }
+
+    // Load To-Do Tasks
+    function loadToDos() {
+        userRef.collection('todos').get().then(snapshot => {
+            let toDosHtml = '';
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                toDosHtml += `
+                    <tr>
+                        <td>${data.date}</td>
+                        <td>${data.time}</td>
+                        <td>${data.description}</td>
+                        <td>${data.status}</td>
+                        <td>
+                            <button class="btn" onclick="updateToDoStatus('${doc.id}', '${data.status}')">${data.status === 'Done' ? 'Not Done' : 'Done'}</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('todo-table-body').innerHTML = toDosHtml;
+        }).catch(error => {
+            console.error("Error loading To-Do tasks: ", error);
+        });
+    }
+
+    // Update To-Do Task Status
+    function updateToDoStatus(taskId, currentStatus) {
+        const newStatus = currentStatus === 'Done' ? 'Not Done' : 'Done';
+        userRef.collection('todos').doc(taskId).update({
+            status: newStatus
+        }).then(() => {
+            alert("To-Do task status updated successfully!");
+            loadToDos();
+        }).catch(error => {
+            console.error("Error updating To-Do task status: ", error);
+            alert("Failed to update the To-Do task status. Please try again.");
+        });
+    }
+function showChatbot() {
+    hideAllPages();
+    document.getElementById('chatbot-page').classList.remove('hidden');
+    document.getElementById('hamburger-menu').style.display = 'block';
+    document.querySelector('.bottom-nav').style.display = 'flex'; // Show bottom navigation bar
+    
+    // Add initial bot message
+    if (!document.querySelector('.chat-message')) {
+        addMessage("Hi! I'm your expense tracking assistant. How can I help you today?", 'bot');
+    }
+}
+
+async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    
+    if (message) {
+        // Add user message
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        try {
+            // Get bot response
+            const botResponse = await getBotResponse(message);
+            // Remove typing indicator and add bot response
+            hideTypingIndicator();
+            addMessage(botResponse, 'bot');
+        } catch (error) {
+            hideTypingIndicator();
+            addMessage("Sorry, I encountered an error. Please try again.", 'bot');
+            console.error('Chatbot error:', error);
+        }
+    }
+}
+
+function showTypingIndicator() {
+    const chatMessages = document.getElementById('chat-messages');
+    const typingDiv = document.createElement('div');
+    typingDiv.id = 'typing-indicator';
+    typingDiv.className = 'chat-message bot-message typing';
+    typingDiv.innerHTML = 'Typing...';
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function hideTypingIndicator() {
+    const typingIndicator = document.getElementById('typing-indicator');
+    if (typingIndicator) {
+        typingIndicator.remove();
+    }
+}
+
+function addMessage(message, type) {
+    const chatMessages = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    messageDiv.className = `chat-message ${type}-message`;
+    
+    // Handle messages with HTML content (like buttons)
+    if (message.includes('<button')) {
+        messageDiv.innerHTML = message;
+    } else {
+        messageDiv.textContent = message;
+    }
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = time;
+    messageDiv.appendChild(timeDiv);
+    
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+async function getBotResponse(message) {
+    const lowerMessage = message.toLowerCase().trim();
+    const user = firebase.auth().currentUser;
+    
+    if (!user) {
+        return "Please log in to use the chatbot.";
+    }
+
+    const userRef = firebase.firestore().collection('users').doc(user.uid);
+
+    try {
+        const userDoc = await userRef.get();
+        if (!userDoc.exists) {
+            return "Unable to find user data.";
+        }
+        const userData = userDoc.data();
+
+        // Handle Yes/No responses first
+        if (lowerMessage === 'yes' || lowerMessage === 'no') {
+            switch(lastMessageContext) {
+                case 'name_edit':
+                    if (lowerMessage === 'yes') {
+                        lastMessageContext = ''; // Reset context
+                        return createEditButton('name');
+                    } else {
+                        lastMessageContext = '';
+                        return "Thank you! Your name will remain unchanged.";
+                    }
+                case 'salary_edit':
+                    if (lowerMessage === 'yes') {
+                        lastMessageContext = '';
+                        return createEditButton('salary');
+                    } else {
+                        lastMessageContext = '';
+                        return "Thank you! Your salary will remain unchanged.";
+                    }
+                default:
+                    break;
+            }
+        }
+
+        // Handle greetings
+        if (lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
+            return `Hello ${userData.name}! How can I assist you today?`;
+        }
+
+        // Handle name-related queries
+        if (lowerMessage.includes('my name')) {
+            if (lowerMessage.includes('edit')) {
+                lastMessageContext = 'name_edit';
+                return `Your current name is ${userData.name}. Would you like to edit it? (Yes/No)`;
+            }
+            return `Your name is ${userData.name}`;
+        }
+
+        // Handle salary-related queries
+        if (lowerMessage.includes('salary')) {
+            if (lowerMessage.includes('edit')) {
+                lastMessageContext = 'salary_edit';
+                return `Your current salary is ${userData.salaryAmount} INR. Would you like to edit it? (Yes/No)`;
+            }
+            return `Your salary is ${userData.salaryAmount} INR`;
+        }
+
+        // Handle remaining balance query
+        if (lowerMessage.includes('remaining balance') || lowerMessage.includes('balance')) {
+            const totalExp = await getTotalExpenses(userRef);
+            const remainingBalance = userData.salaryAmount - totalExp;
+            return `Your remaining balance is ${remainingBalance} INR`;
+        }
+
+        // Handle total expenses query
+        if (lowerMessage.includes('total expenses')) {
+            const totalExp = await getTotalExpenses(userRef);
+            return `Your total expenses are ${totalExp} INR`;
+        }
+
+        // Handle monthly expenses query
+        if (lowerMessage.includes('monthly expenses')) {
+            const monthRegex = /\d{4}-\d{2}/;
+            const monthMatch = message.match(monthRegex);
+            
+            if (!monthMatch) {
+                return "Please specify the month in YYYY-MM format (e.g., monthly expenses 2024-02)";
+            }
+
+            const monthYear = monthMatch[0];
+            const [year, month] = monthYear.split('-');
+            const startDate = `${year}-${month}-01`;
+            const endDate = `${year}-${month}-31`;
+
+            const expensesSnapshot = await userRef.collection('expenses')
+                .where('date', '>=', startDate)
+                .where('date', '<=', endDate)
+                .orderBy('date')
+                .get();
+
+            if (expensesSnapshot.empty) {
+                return `No expenses found for ${monthYear}`;
+            }
+
+            let totalAmount = 0;
+            let expensesList = `Expenses for ${monthYear}:\n\n`;
+            
+            expensesSnapshot.forEach(doc => {
+                const expense = doc.data();
+                totalAmount += parseFloat(expense.amount);
+                expensesList += `• ${expense.category}: ${expense.amount} INR (${expense.date})\n`;
+            });
+
+            expensesList += `\nTotal Monthly Expenses: ${totalAmount} INR`;
+            return expensesList;
+        }
+
+        // Handle yearly expenses query
+        if (lowerMessage.includes('yearly expenses')) {
+            const yearRegex = /\d{4}/;
+            const yearMatch = message.match(yearRegex);
+            
+            if (!yearMatch) {
+                return "Please specify the year (e.g., yearly expenses 2024)";
+            }
+
+            const year = yearMatch[0];
+            const startDate = `${year}-01-01`;
+            const endDate = `${year}-12-31`;
+
+            const expensesSnapshot = await userRef.collection('expenses')
+                .where('date', '>=', startDate)
+                .where('date', '<=', endDate)
+                .orderBy('date')
+                .get();
+
+            if (expensesSnapshot.empty) {
+                return `No expenses found for year ${year}`;
+            }
+
+            const monthlyExpenses = {};
+            let yearlyTotal = 0;
+
+            expensesSnapshot.forEach(doc => {
+                const expense = doc.data();
+                const month = expense.date.substring(0, 7);
+                if (!monthlyExpenses[month]) {
+                    monthlyExpenses[month] = 0;
+                }
+                monthlyExpenses[month] += parseFloat(expense.amount);
+                yearlyTotal += parseFloat(expense.amount);
+            });
+
+            let response = `Expenses for Year ${year}:\n\n`;
+            Object.keys(monthlyExpenses)
+                .sort()
+                .forEach(month => {
+                    const monthName = new Date(month + '-01').toLocaleString('default', { month: 'long' });
+                    response += `${monthName}: ${monthlyExpenses[month]} INR\n`;
+                });
+
+            response += `\nTotal Yearly Expenses: ${yearlyTotal} INR`;
+            return response;
+        }
+
+        // Handle specific date expenses
+        if (lowerMessage.includes('expenses') && containsDate(message)) {
+            const date = extractDate(message);
+            if (!date) {
+                return "Please provide a valid date format (YYYY-MM-DD). For example: 'expenses 2024-02-15'";
+            }
+
+            const expenses = await getExpensesByDate(userRef, date);
+            if (expenses.length === 0) {
+                return `No expenses found for ${date}`;
+            }
+
+            let total = 0;
+            let response = `Expenses for ${date}:\n\n`;
+            expenses.forEach((expense, index) => {
+                total += parseFloat(expense.amount);
+                response += `${index + 1}. ${expense.category}: ${expense.amount} INR\n`;
+            });
+            response += `\nTotal: ${total} INR`;
+            return response;
+        }
+
+        // Handle todo list for specific date
+        if (lowerMessage.includes('todo') && containsDate(message)) {
+            const date = extractDate(message);
+            if (!date) {
+                return "Please provide a valid date format (YYYY-MM-DD). For example: 'todo 2024-02-15'";
+            }
+
+            const todos = await getTodosByDate(userRef, date);
+            if (todos.length === 0) {
+                return `No todo items found for ${date}`;
+            }
+
+            let response = `Todo list for ${date}:\n\n`;
+            todos.forEach((todo, index) => {
+                response += `${index + 1}. ${todo.description} - ${todo.status} (${todo.time})\n`;
+            });
+            return response;
+        }
+// In your getBotResponse function, replace the default help message with this:
+
+// In your getBotResponse function, update the default help message:
+
+        return `I can help you with:<br>
+        - Checking your name and salary
+        - Viewing total expenses<br>
+        - Viewing expenses by date (e.g., "expenses 2024-02-15")<br>
+        - Viewing monthly expenses (e.g., "monthly expenses 2024-02")<br>
+        - Viewing yearly expenses (e.g., "yearly expenses 2024")<br>
+        - Checking todo lists by date (e.g., "todo 2024-02-15")<br>
+        - Checking remaining balance<br>
+        - Editing your name or salary<br>
+        
+How can I assist you?`;
+
+    } catch (error) {
+        console.error('Error in chatbot:', error);
+        return "Sorry, I encountered an error. Please try again.";
+    }
+}
+// Helper Functions
+
+function containsDate(message) {
+    const datePatterns = [
+        /\d{4}-\d{2}-\d{2}/, // YYYY-MM-DD
+        /\d{2}\/\d{2}\/\d{4}/, // DD/MM/YYYY
+        /\d{2}-\d{2}-\d{4}/ // DD-MM-YYYY
+    ];
+    return datePatterns.some(pattern => pattern.test(message));
+}
+
+function extractDate(message) {
+    const datePatterns = {
+        'YYYY-MM-DD': /\d{4}-\d{2}-\d{2}/,
+        'DD/MM/YYYY': /\d{2}\/\d{2}\/\d{4}/,
+        'DD-MM-YYYY': /\d{2}-\d{2}-\d{4}/
+    };
+
+    for (let [format, pattern] of Object.entries(datePatterns)) {
+        const match = message.match(pattern);
+        if (match) {
+            const dateStr = match[0];
+            if (format === 'YYYY-MM-DD') {
+                return dateStr;
+            } else {
+                // Convert to YYYY-MM-DD
+                const parts = dateStr.split(/[-/]/);
+                return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            }
+        }
+    }
+    return null;
+}
+
+function containsMonth(message) {
+    return /\d{4}-(?:0[1-9]|1[0-2])/.test(message);
+}
+
+function extractMonth(message) {
+    const match = message.match(/\d{4}-(?:0[1-9]|1[0-2])/);
+    return match ? match[0] : null;
+}
+
+function containsYear(message) {
+    return /\d{4}/.test(message);
+}
+
+function extractYear(message) {
+    const match = message.match(/\d{4}/);
+    return match ? match[0] : null;
+}
+
+function formatExpensesList(expenses) {
+    if (expenses.length === 0) return "No expenses found.";
+    
+    let response = "Here are the expenses:\n";
+    expenses.forEach((expense, index) => {
+        response += `${index + 1}. ${expense.category}: ${expense.amount} INR (${expense.date})\n`;
+    });
+    return response;
+}
+
+function formatTodoList(todos) {
+    if (todos.length === 0) return "No todo items found.";
+    
+    let response = "Here are the todo items:\n";
+    todos.forEach((todo, index) => {
+        response += `${index + 1}. ${todo.description} - ${todo.status} (${todo.time})\n`;
+    });
+    return response;
+}
+
+// Update the createEditButton function
+function createEditButton(type) {
+    const buttonText = type === 'name' ? 'Edit Name' : 'Edit Salary';
+    const buttonId = type === 'name' ? 'editNameBtn' : 'editSalaryBtn';
+    return `
+        <div class="chat-button-container">
+            <button id="${buttonId}" class="chat-action-button" onclick="handleEditButton('${type}')">
+                ${buttonText}
+            </button>
+        </div>
+    `;
+}
+
+// Update the handleEditButton function
+function handleEditButton(type) {
+    // Hide chatbot page
+    document.getElementById('chatbot-page').classList.add('hidden');
+    
+    if (type === 'name') {
+        // Show edit name page
+        document.getElementById('edit-name-page').classList.remove('hidden');
+        document.getElementById('nameInput').focus();
+    } else if (type === 'salary') {
+        // Show edit salary page
+        document.getElementById('edit-salary-page').classList.remove('hidden');
+        document.getElementById('salaryInput').focus();
+    }
+}
+
+// Add event listeners for the edit buttons
+document.addEventListener('DOMContentLoaded', function() {
+    // Edit Name button click handler
+    document.body.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'editNameBtn') {
+            handleEditButton('name');
+        }
+    });
+
+    // Edit Salary button click handler
+    document.body.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'editSalaryBtn') {
+            handleEditButton('salary');
+        }
+    });
+});
+
+async function getTotalExpenses(userRef) {
+    const snapshot = await userRef.collection('expenses').get();
+    let total = 0;
+    snapshot.forEach(doc => {
+        const amount = parseFloat(doc.data().amount);
+        if (!isNaN(amount)) {
+            total += amount;
+        }
+    });
+    return total;
+}
+
+async function getExpensesByDate(userRef, date) {
+    const snapshot = await userRef.collection('expenses')
+        .where('date', '==', date)
+        .get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
+async function getTodosByDate(userRef, date) {
+    const snapshot = await userRef.collection('todos')
+        .where('date', '==', date)
+        .get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
+async function getMonthlyExpenses(userRef, monthYear) {
+    try {
+        const [year, month] = monthYear.split('-');
+        const startDate = `${year}-${month}-01`;
+        const endDate = `${year}-${month}-31`;
+        
+        const snapshot = await userRef.collection('expenses')
+            .where('date', '>=', startDate)
+            .where('date', '<=', endDate)
+            .orderBy('date', 'asc')
+            .get();
+
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Error getting monthly expenses:', error);
+        return [];
+    }
+}
+
+
+async function getYearlyExpenses(userRef, year) {
+    try {
+        const startDate = `${year}-01-01`;
+        const endDate = `${year}-12-31`;
+        
+        const snapshot = await userRef.collection('expenses')
+            .where('date', '>=', startDate)
+            .where('date', '<=', endDate)
+            .orderBy('date', 'asc')
+            .get();
+
+        return snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+        }));
+    } catch (error) {
+        console.error('Error getting yearly expenses:', error);
+        return [];
+    }
+}
+// Helper function to format currency
+function formatCurrency(amount) {
+    return parseFloat(amount).toFixed(2);
+}
+
+// Helper function to format date
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-IN', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+// Update the datetime display
+function updateDateTime() {
+    const now = new Date();
+    const formatted = now.toISOString().replace('T', ' ').substring(0, 19);
+    document.getElementById('current-datetime').textContent = formatted;
+}
+
+function hideAllPages() {
+    const pages = document.querySelectorAll('.container');
+    pages.forEach(page => page.classList.add('hidden'));
+    document.querySelector('.bottom-nav').style.display = 'none';
+}
+</script>
+</body>
+</html>
